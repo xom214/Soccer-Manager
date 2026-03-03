@@ -66,9 +66,16 @@ export default function AppShell({ children }) {
                     </button>
                     <div className="mobile-header__logo">⚽ Cứng Rắn FC</div>
                     <div className="mobile-header__user">
-                        <div className={`app-topbar__user-avatar ${isAdmin ? 'bg-[var(--primary)]' : 'bg-gray-500'}`}>
+                        <div className={`app-topbar__user-avatar ${isAdmin ? 'bg-[var(--primary)]' : 'bg-gray-500'} mr-2`}>
                             {isAdmin ? <Shield size={16} /> : <User size={16} />}
                         </div>
+                        <button
+                            className="app-topbar__logout"
+                            onClick={handleSignOut}
+                            title="Thoát"
+                        >
+                            <LogOut size={20} />
+                        </button>
                     </div>
                 </div>
 

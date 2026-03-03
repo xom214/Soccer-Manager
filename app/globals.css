@@ -254,6 +254,25 @@ body {
   border-radius: var(--radius-full);
 }
 
+.sidebar-footer {
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.sidebar-link--logout {
+  width: calc(100% - 16px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.sidebar-link--logout:hover {
+  color: var(--red);
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
 /* ============================================
    CARDS
    ============================================ */

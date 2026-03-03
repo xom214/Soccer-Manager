@@ -46,13 +46,14 @@ export default function DashboardPage() {
     return <div className="loading-screen"><div className="loading-spinner" /><p className="text-sm text-[var(--text-muted)]">Đang tải dữ liệu...</p></div>;
   }
 
+  const now = new Date();
   const recentMatches = matches
-    .filter(m => m.status === 'completed')
+    .filter(m => m.status === 'completed' || new Date(m.date) < now)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
 
   const upcomingMatches = matches
-    .filter(m => m.status === 'upcoming')
+    .filter(m => m.status === 'upcoming' && new Date(m.date) >= now)
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   return (

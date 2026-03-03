@@ -1,8 +1,10 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Shirt, CalendarDays, Trophy, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Users, Shirt, CalendarDays, Trophy, BarChart3, LogOut } from 'lucide-react';
 import { useData } from '@/lib/DataContext';
+import { useAuth } from '@/lib/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const navItems = [
     {
@@ -27,7 +29,15 @@ const navItems = [
 
 export default function Sidebar({ onNavClick }) {
     const pathname = usePathname();
+    const router = useRouter();
     const { players } = useData();
+    const { signOut, user } = useAuth();
+
+    const handleSignOut = async () => {
+        if (onNavClick) onNavClick();
+        await signOut();
+        router.push('/login');
+    };
 
     return (
         <aside className="sidebar">
@@ -66,6 +76,17 @@ export default function Sidebar({ onNavClick }) {
                     </div>
                 ))}
             </nav>
+
+            {/* Footer / Logout */}
+            <div className="sidebar-footer">
+                <button
+                    className="sidebar-link sidebar-link--logout"
+                    onClick={handleSignOut}
+                >
+                    <LogOut size={18} />
+                    <span>Thoát tài khoản</span>
+                </button>
+            </div>
         </aside>
     );
 }

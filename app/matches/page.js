@@ -25,8 +25,9 @@ export default function MatchesPage() {
 
     if (loading) return <div className="loading-screen"><div className="loading-spinner" /></div>;
 
-    const upcoming = matches.filter(m => m.status === 'upcoming').sort((a, b) => new Date(a.date) - new Date(b.date));
-    const completed = matches.filter(m => m.status === 'completed').sort((a, b) => new Date(b.date) - new Date(a.date));
+    const now = new Date();
+    const upcoming = matches.filter(m => m.status === 'upcoming' && new Date(m.date) >= now).sort((a, b) => new Date(a.date) - new Date(b.date));
+    const completed = matches.filter(m => m.status === 'completed' || (m.status === 'upcoming' && new Date(m.date) < now)).sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const openAdd = () => {
         setEditingMatch(null);
@@ -86,8 +87,8 @@ export default function MatchesPage() {
                     </div>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className={`tag ${m.status === 'upcoming' ? 'tag--blue' : 'tag--green'}`}>
-                        {m.status === 'upcoming' ? 'Sắp tới' : 'Đã xong'}
+                    <span className={`tag ${m.status === 'completed' ? 'tag--green' : (new Date(m.date) < now ? 'tag--yellow' : 'tag--blue')}`}>
+                        {m.status === 'completed' ? 'Đã xong' : (new Date(m.date) < now ? 'Chờ kết quả' : 'Sắp tới')}
                     </span>
                     {uniform && (
                         <span className="text-xs text-[var(--text-muted)] flex items-center gap-1"><Shirt size={12} />{uniform.name}</span>

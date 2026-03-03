@@ -33,8 +33,9 @@ export default function ResultsPage() {
 
     if (loading) return <div className="loading-screen"><div className="loading-spinner" /></div>;
 
+    const now = new Date();
     const completedMatches = matches
-        .filter(m => m.status === 'completed')
+        .filter(m => m.status === 'completed' || new Date(m.date) < now)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const startEdit = (m) => {
