@@ -10,18 +10,16 @@ function PlayerAvatar({ player }) {
 }
 
 export default function PerformancePage() {
-    const { matches, results, players, teamStats, topScorers, loading } = useData();
+    const { activeMatches, activeResults, players, teamStats, topScorers, topAssisters, loading } = useData();
 
     if (loading) return <div className="loading-screen"><div className="loading-spinner" /></div>;
 
-    const topAssisters = computeTopAssisters(results, players, 5);
-
-    const completedMatches = matches
+    const completedMatches = activeMatches
         .filter(m => m.status === 'completed')
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     const chartData = completedMatches.map(m => {
-        const r = results.find(res => res.matchId === m.id);
+        const r = activeResults.find(res => res.matchId === m.id);
         return { label: m.opponent.split(' ')[0], value: r ? r.ourScore : 0 };
     });
 

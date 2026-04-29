@@ -1,16 +1,20 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
+import { useData } from '@/lib/DataContext';
 import Sidebar from '@/components/Sidebar';
 import { useState, useEffect } from 'react';
 import { Menu, X, LogOut, User, Shield, LayoutDashboard, Users, Calendar, Trophy } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AppShell({ children }) {
-    const { user, loading, signOut, authEnabled, isAdmin } = useAuth();
+    const { user, loading: authLoading, signOut, authEnabled, isAdmin } = useAuth();
+    const { seasons, selectedSeasonId, setSelectedSeasonId, loading: dataLoading } = useData();
     const pathname = usePathname();
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    
+    const loading = authLoading || dataLoading;
 
     // Redirect logic
     useEffect(() => {
@@ -65,6 +69,20 @@ export default function AppShell({ children }) {
                         <Menu size={24} />
                     </button>
                     <div className="mobile-header__logo">⚽ Cứng Rắn FC</div>
+                    <div className="flex-1 px-2">
+                        {seasons && seasons.length > 0 && (
+                            <select
+                                className="w-full bg-transparent text-sm font-semibold border-b border-[var(--primary)] text-[var(--text-main)] focus:outline-none"
+                                value={selectedSeasonId || ''}
+                                onChange={(e) => setSelectedSeasonId(e.target.value)}
+                            >
+                                <option value="all">Tất cả mùa giải</option>
+                                {seasons.map(s => (
+                                    <option key={s.id} value={s.id}>{s.name}</option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
                     <div className="mobile-header__user">
                         <div className={`app-topbar__user-avatar ${isAdmin ? 'bg-[var(--primary)]' : 'bg-gray-500'} mr-2`}>
                             {isAdmin ? <Shield size={16} /> : <User size={16} />}
@@ -80,7 +98,21 @@ export default function AppShell({ children }) {
                 </div>
 
                 {/* Desktop Topbar */}
-                <div className="desktop-topbar">
+                <div className="desktop-topbar flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                        {seasons && seasons.length > 0 && (
+                            <select
+                                className="form-select bg-white border border-gray-200 rounded-md py-1 px-3 text-sm font-semibold focus:ring-[var(--primary)] focus:border-[var(--primary)]"
+                                value={selectedSeasonId || ''}
+                                onChange={(e) => setSelectedSeasonId(e.target.value)}
+                            >
+                                <option value="all">Tất cả mùa giải</option>
+                                {seasons.map(s => (
+                                    <option key={s.id} value={s.id}>{s.name}</option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
                     <div className="app-topbar__spacer" />
                     <div className="app-topbar__user">
                         {user && (

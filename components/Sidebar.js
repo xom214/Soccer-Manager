@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Shirt, CalendarDays, Trophy, BarChart3, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Shirt, CalendarDays, Trophy, BarChart3, LogOut, Layers } from 'lucide-react';
 import { useData } from '@/lib/DataContext';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,7 @@ const navItems = [
         group: 'QUẢN LÝ', items: [
             { href: '/players', label: 'Đội hình', icon: Users, badge: 'players' },
             { href: '/uniforms', label: 'Trang phục', icon: Shirt },
+            { href: '/seasons', label: 'Mùa giải', icon: Layers },
             { href: '/matches', label: 'Lịch thi đấu', icon: CalendarDays },
             { href: '/results', label: 'Kết quả', icon: Trophy },
         ]

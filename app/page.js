@@ -40,19 +40,19 @@ function PlayerAvatar({ player, size = 36 }) {
 }
 
 export default function DashboardPage() {
-  const { players, matches, results, teamStats, topScorers, getUniformById, getResultByMatchId, loading } = useData();
+  const { players, activeMatches, teamStats, topScorers, getUniformById, getResultByMatchId, loading } = useData();
 
   if (loading) {
     return <div className="loading-screen"><div className="loading-spinner" /><p className="text-sm text-[var(--text-muted)]">Đang tải dữ liệu...</p></div>;
   }
 
   const now = new Date();
-  const recentMatches = matches
+  const recentMatches = activeMatches
     .filter(m => m.status === 'completed' || new Date(m.date) < now)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
 
-  const upcomingMatches = matches
+  const upcomingMatches = activeMatches
     .filter(m => m.status === 'upcoming' && new Date(m.date) >= now)
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
